@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,render_template
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -40,5 +40,10 @@ def create_app():
     @app.route("/health")
     def health():
         return {"status": "Database connected successfully"}
+    
+    @app.route("/")
+    def home():
+        return render_template("landing.html")
+
 
     return app
