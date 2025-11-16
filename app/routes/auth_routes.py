@@ -40,7 +40,7 @@ def login():
     except Exception as e:
         return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
-@auth_bp.route("/login",methods=["GET"])
+@auth_bp.route("/",methods=["GET"])
 def login_page():
     return render_template("login.html")
     
