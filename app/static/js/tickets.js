@@ -8,7 +8,6 @@
 // const token = localStorage.getItem("token");
 // console.log("Token retrieved: " + (token ? "Yes" : "No"));
 
-
 // /**
 //  * Loads and displays the list of user tickets.
 //  */
@@ -86,7 +85,7 @@
 //     if (!token) {
 //         console.log("No authentication token found. Redirecting to login.");
 //         // We log the error but still redirect, as the user cannot use this page without auth.
-//         window.location.href = "/login"; 
+//         window.location.href = "/login";
 //         return;
 //     }
 
@@ -115,112 +114,110 @@ console.log("Token retrieved: " + (token ? "Yes" : "No"));
  * Loads and displays the list of user tickets.
  */
 async function loadTickets() {
-    if (!token) return;
+  if (!token) return;
 
-    try {
-        const tickets = await apiGet("/api/tickets/get-tickets", token);
+  try {
+    const tickets = await apiGet("/api/tickets/get-tickets", token);
 
-        if (!ticketsContainer) {
-            console.error("ticketsContainer element NOT found in DOM");
-            return;
-        }
+    if (!ticketsContainer) {
+      console.error("ticketsContainer element NOT found in DOM");
+      return;
+    }
 
-        ticketsContainer.innerHTML = "";
+    ticketsContainer.innerHTML = "";
 
-        if (!tickets || tickets.error) {
-            console.error(tickets.error || "Failed to load tickets");
-            ticketsContainer.innerHTML = `
-                <p class="text-red-500">Error: ${tickets.error || "Failed to load tickets"}</p>
+    if (!tickets || tickets.error) {
+      console.error(tickets.error || "Failed to load tickets");
+      ticketsContainer.innerHTML = `
+                <p class="text-red-500">Error: ${
+                  tickets.error || "Failed to load tickets"
+                }</p>
             `;
-            return;
-        }
+      return;
+    }
 
-        tickets.forEach(t => {
-            const div = document.createElement("div");
-            div.classList.add("ticket", "p-4", "border", "rounded-lg", "shadow-sm", "mb-3");
+    tickets.forEach((t) => {
+      const div = document.createElement("div");
+      div.classList.add("ticket-card");
+      div.innerHTML = `
+        <div class="ticket-title">
+            ${t.title}
+            <span class="ticket-status">${t.status}</span>
+        </div>
 
-            div.innerHTML = `
-                <h4 class="text-lg font-semibold">
-                    ${t.title}
-                    <span class="text-sm text-gray-500">(${t.status})</span>
-                </h4>
+        <p class="ticket-description">${t.subject}</p>
 
-                <p class="text-gray-700 mt-1">${t.subject}</p>
+            <div class="ticket-meta">
+                <strong>Priority:</strong> ${t.priority}<br>
+                <strong>Created:</strong> ${new Date(t.created_at).toLocaleString()}
+            </div>
 
-                <div class="text-xs mt-2 space-y-1">
-                    <p><strong>Priority:</strong> <span class="font-medium">${t.priority}</span></p>
-                    <p><strong>Created At:</strong> ${new Date(t.created_at).toLocaleString()}</p>
-                </div>
+        <a href="/api/messages/chat/${t.id}" class="chat-btn">Open Chat</a>
+    `;
 
-                <!-- FIXED CHAT LINK -->
-                <a href="/api/messages/chat/${t.id}" 
-                   class="text-blue-600 hover:underline mt-2 inline-block">
-                   Open Chat
-                </a>
-            `;
-
-            ticketsContainer.appendChild(div);
-        });
-
-    } catch (err) {
-        console.error("Error loading tickets:", err);
-        ticketsContainer.innerHTML = `
+      ticketsContainer.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Error loading tickets:", err);
+    ticketsContainer.innerHTML = `
             <p class="text-red-500">Unexpected error while loading tickets.</p>
         `;
-    }
+  }
 }
 
 /**
  * Handles the submission of the new ticket form.
  */
 async function handleNewTicketSubmission(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!token) {
-        console.error("Attempted to create ticket without token.");
-        return;
+  if (!token) {
+    console.error("Attempted to create ticket without token.");
+    return;
+  }
+
+  const title = newTicketForm.title.value;
+  const subject = newTicketForm.subject.value;
+  const priority = newTicketForm.priority.value;
+
+  try {
+    const result = await apiPost(
+      "/api/tickets/create-ticket",
+      { title, subject, priority },
+      token
+    );
+
+    console.log("Create Ticket Result:", result);
+
+    if (result.message) {
+      newTicketForm.reset();
+      loadTickets();
+    } else {
+      console.error(
+        "Ticket creation failed:",
+        result.error || result.details || "Unknown error"
+      );
     }
-
-    const title = newTicketForm.title.value;
-    const subject = newTicketForm.subject.value;
-    const priority = newTicketForm.priority.value;
-
-    try {
-        const result = await apiPost(
-            "/api/tickets/create-ticket",
-            { title, subject, priority },
-            token
-        );
-
-        console.log("Create Ticket Result:", result);
-
-        if (result.message) {
-            newTicketForm.reset();
-            loadTickets();
-        } else {
-            console.error("Ticket creation failed:", result.error || result.details || "Unknown error");
-        }
-
-    } catch (err) {
-        console.error("Something went wrong during ticket creation:", err);
-    }
+  } catch (err) {
+    console.error("Something went wrong during ticket creation:", err);
+  }
 }
 
 /**
  * Initialization of ticket page.
  */
 function initTicketsPage() {
-    if (!token) {
-        console.log("No authentication token found. Redirecting to login.");
-        window.location.href = "/login";
-        return;
-    }
+  if (!token) {
+    console.log("No authentication token found. Redirecting to login.");
+    window.location.href = "/login";
+    return;
+  }
 
-    loadTickets();
+  loadTickets();
 
-    if (newTicketForm) {
-        newTicketForm.addEventListener("submit", handleNewTicketSubmission);
-    }
+  if (newTicketForm) {
+    newTicketForm.addEventListener("submit", handleNewTicketSubmission);
+  }
 }
 
 window.addEventListener("DOMContentLoaded", initTicketsPage);

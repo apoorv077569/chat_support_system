@@ -103,20 +103,37 @@ button:hover {
 
     </style> -->
 </head>
-<body>
-    <h2>My Tickets</h2>
-    <div id="ticketsContainer" class="ticketsContainer"></div>
-        <h3>Create New Ticket</h3>
-        <form id="newTicketForm">
-            <input type="text" name="title" placeholder="Ticket Title" required>
-            <input type="text"name="subject" placeholder="Ticket Description" required>
-            <select name="priority">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
-             <button type="submit">Submit Ticket</button>
-        </form>
-        <script type="module" src="{{url_for('static',filename='js/tickets.js')}}"></script>
+<body class="ticket-ui">
+    <div class="page-container">
+
+        <!-- PAGE TITLE -->
+        <h2 class="page-title">🎫 My Tickets</h2>
+
+        <!-- TICKET WRAPPER -->
+        <div class="ticket-wrapper" id="ticketsContainer"></div>
+
+        <!-- CREATE TICKET FORM -->
+        <div class="form-card">
+            <h3>Create New Ticket</h3>
+
+            <form id="newTicketForm">
+                <label>Ticket Title</label>
+                <input type="text" name="title" placeholder="Enter ticket title..." required>
+
+                <label>Ticket Description</label>
+                <input type="text" name="subject" placeholder="Describe your issue..." required>
+
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+
+                <button type="submit" class="submit-btn">Submit Ticket</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
