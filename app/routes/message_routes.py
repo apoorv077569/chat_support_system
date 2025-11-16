@@ -84,17 +84,15 @@ def get_message(ticket_id):
 
 # ---------------- Render Chat Page ----------------
 @message_bp.route("/chat/<int:ticket_id>", methods=["GET"])
-@jwt_required()
+
 def chat_page(ticket_id):
-    user_id = get_jwt_identity()
     ticket = Ticket.query.get(ticket_id)
     if not ticket:
         return "Ticket not found", 404
 
     return render_template(
-        "chat.html", 
-        ticket_id=ticket_id, 
-        user_id=user_id
+        "ticket_chat.html", 
+        ticket_id=ticket_id
     )
 
 

@@ -1,4 +1,4 @@
-from flask import Blueprint,request,jsonify
+from flask import Blueprint,request,jsonify,render_template
 from app import db
 from app.models.tickets import Ticket
 from flask_jwt_extended import jwt_required,get_jwt_identity
@@ -74,3 +74,30 @@ def getTicketById():
 @ticket_bp.route("/ticket/update/:id",methods=["PATCH"])
 def updateTicket():
     pass
+
+@ticket_bp.route("/")
+def tickets_page():
+    return render_template("tickets.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

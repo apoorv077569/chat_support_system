@@ -1,0 +1,30 @@
+Date: 26/10/2025
+Time: 23:57
+Phone Number: +91 9634607848
+Message: Hello boss! This is automated 😎
+--------------------
+Date: 27/10/2025
+Time: 0:2
+Phone Number: +91 9719175684
+Message: Hello Miss TL! This is automated message using python
+--------------------
+Date: 27/10/2025
+Time: 0:3
+Phone Number: +91 9719175684
+Message: Hello Miss TL! This is automated message using python
+--------------------
+Date: 27/10/2025
+Time: 0:5
+Phone Number: +91 97191756xx
+Message: Hello Miss TL! This is automated message using python
+--------------------
+Date: 27/10/2025
+Time: 0:6
+Phone Number: +91 9719175684
+Message: Hello Miss TL! This is automated message using python
+--------------------
+Date: 27/10/2025
+Time: 0:9
+Phone Number: +91 9719175684
+Message: Good Morning Miss TL
+--------------------
