@@ -21,7 +21,5 @@ with app.app_context():
 # Start Flask server
 if __name__ == "__main__":
     # app.run(host="127.0.0.1", port=5000, debug=True)
-    socket_io.run(app,host="127.0.0.1",port=5000,debug=True)
-    port = int(os.environ.get("PORT", 10000))
-    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", port)), app)
+    socket_io.run(app,host="0.0.0.0",port=5000,debug=True)
 
