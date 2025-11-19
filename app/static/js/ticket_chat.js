@@ -1,5 +1,4 @@
-// Socket.io connection
-const socket = io();
+const socket = io("https://chat-support-system.onrender.com");
 
 // Read template values
 const ticket_id = document.body.dataset.ticketId;
