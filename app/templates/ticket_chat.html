@@ -4,110 +4,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Chat #{{ ticket_id }}</title>
+    <title>Admin Chat – Ticket #{{ ticket_id }}</title>
+
     <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #ece5dd;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e8f0fe; /* Light admin blue */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
 
-    /* Top Bar */
-    h2 {
-        margin: 0;
-        padding: 15px;
-        background: #075e54;
-        color: white;
-        text-align: center;
-        font-size: 18px;
-    }
+        /* ---------- TOP HEADER ---------- */
+        .top-bar {
+            background: #1a73e8; /* Admin blue */
+            padding: 15px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    /* Chat container */
-    #messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 15px;
-        background: #ece5dd;
-        display: flex;
-        flex-direction: column;
-    }
+        .top-bar .back-btn {
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+        }
 
-    /* Message bubble base */
-    .msg {
-        max-width: 70%;
-        padding: 10px 14px;
-        border-radius: 10px;
-        margin: 5px 0;
-        font-size: 14px;
-        line-height: 18px;
-    }
+        .top-bar .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
 
-    /* My message bubble (right side) */
-    .me {
-        background: #dcf8c6;
-        align-self: flex-end;
-        border-bottom-right-radius: 0;
-    }
+        /* ---------- MESSAGES AREA ---------- */
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            background: #dbe8ff;
+        }
 
-    /* Other user's bubble (left side) */
-    .other {
-        background: #fff;
-        align-self: flex-start;
-        border-bottom-left-radius: 0;
-    }
+        .msg {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 6px 0;
+            font-size: 14px;
+            line-height: 18px;
+        }
 
-    /* Bottom input bar */
-    .input-area {
-        display: flex;
-        padding: 10px;
-        background: #f0f0f0;
-    }
+        /* Admin message bubble – right side */
+        .me {
+            background: #c8e4ff; 
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+            border: 1px solid #a8d2ff;
+        }
 
-    #message_input {
-        flex: 1;
-        padding: 10px 14px;
-        border: 1px solid #ccc;
-        border-radius: 25px;
-        font-size: 14px;
-        outline: none;
-    }
+        /* User message bubble – left side */
+        .other {
+            background: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+            border: 1px solid #ddd;
+        }
 
-    #send_btn {
-        margin-left: 10px;
-        background: #25d366;
-        border: none;
-        padding: 0 20px;
-        border-radius: 25px;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 14px;
-    }
+        /* ---------- INPUT AREA ---------- */
+        .input-area {
+            display: flex;
+            padding: 10px;
+            background: #eef3ff;
+            border-top: 1px solid #bcd0ff;
+        }
 
-    #send_btn:hover {
-        background: #1ebe5d;
-    }
-</style>
+        #message_input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #aac8ff;
+            border-radius: 25px;
+            background: #ffffff;
+            outline: none;
+            font-size: 14px;
+        }
 
+        #send_btn {
+            margin-left: 10px;
+            background: #1a73e8;
+            border: none;
+            padding: 0 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #send_btn:hover {
+            background: #1666c2;
+        }
+    </style>
 </head>
 
-<body data-ticket-id="{{ ticket_id }}" data-user-id="{{ user_id }}">
+<body data-ticket-id="{{ ticket_id }}" data-user-id="{{ admin_id }}">
 
-    <h2>Chat for Ticket {{ ticket_id }}</h2>
+    <!-- Admin Top Bar -->
+    <div class="top-bar">
+        <a class="back-btn" href="/admin/tickets">← Back</a>
+        <span>Admin Chat – Ticket {{ ticket_id }}</span>
+        <span style="opacity: 0;">Back</span>
+    </div>
 
+    <!-- Messages List -->
     <div id="messages"></div>
 
+    <!-- Type & Send -->
     <div class="input-area">
         <input type="text" id="message_input" placeholder="Type a message...">
         <button id="send_btn">Send</button>
     </div>
 
+    <!-- Chat JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-    <script type="module" src="{{ url_for('static', filename='js/ticket_chat.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/admin_ticket_chat.js') }}"></script>
+
 </body>
-
-
 </html>

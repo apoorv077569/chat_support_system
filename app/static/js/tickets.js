@@ -136,27 +136,26 @@ async function loadTickets() {
       return;
     }
 
-    tickets.forEach((t) => {
-      const div = document.createElement("div");
-      div.classList.add("ticket-card");
-      div.innerHTML = `
-        <div class="ticket-title">
-            ${t.title}
-            <span class="ticket-status">${t.status}</span>
+   tickets.forEach(t => {
+    const div = document.createElement("div");
+    div.classList.add("ticket-card");
+
+    div.innerHTML = `
+        <h3>${t.title}</h3>
+        <p>${t.subject}</p>
+
+        <div class="ticket-meta">
+            <div><strong>Status:</strong> ${t.status}</div>
+            <div><strong>Priority:</strong> ${t.priority}</div>
+            <div><strong>Created:</strong> ${new Date(t.created_at).toLocaleString()}</div>
         </div>
 
-        <p class="ticket-description">${t.subject}</p>
-
-            <div class="ticket-meta">
-                <strong>Priority:</strong> ${t.priority}<br>
-                <strong>Created:</strong> ${new Date(t.created_at).toLocaleString()}
-            </div>
-
-        <a href="/api/messages/chat/${t.id}" class="chat-btn">Open Chat</a>
+        <a href="/api/messages/chat/${t.id}" class="open-chat-btn">💬 Open Chat</a>
     `;
 
-      ticketsContainer.appendChild(div);
-    });
+    ticketsContainer.appendChild(div);
+});
+
   } catch (err) {
     console.error("Error loading tickets:", err);
     ticketsContainer.innerHTML = `
