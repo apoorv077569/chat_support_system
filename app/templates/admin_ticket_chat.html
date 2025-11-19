@@ -4,65 +4,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Chat - Admin</title>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Admin Chat – Ticket #{{ ticket_id }}</title>
 
     <style>
-        body { background-color: #eef2f6; }
-        #chatBox {
-            height: 400px;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e8f0fe; /* Light admin blue */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ---------- TOP HEADER ---------- */
+        .top-bar {
+            background: #1a73e8; /* Admin blue */
+            padding: 15px;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-bar .back-btn {
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .top-bar .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* ---------- MESSAGES AREA ---------- */
+        #messages {
+            flex: 1;
             overflow-y: auto;
             padding: 15px;
-            background: white;
-            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            background: #dbe8ff;
         }
+
         .msg {
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            max-width: 60%;
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 6px 0;
+            font-size: 14px;
+            line-height: 18px;
         }
-        .user {
-            background: #d1e7ff;
-            align-self: flex-start;
-        }
-        .admin {
-            background: #c8ffc9;
+
+        /* Admin message bubble – right side */
+        .me {
+            background: #c8e4ff; 
             align-self: flex-end;
+            border-bottom-right-radius: 0;
+            border: 1px solid #a8d2ff;
+        }
+
+        /* User message bubble – left side */
+        .other {
+            background: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+            border: 1px solid #ddd;
+        }
+
+        /* ---------- INPUT AREA ---------- */
+        .input-area {
+            display: flex;
+            padding: 10px;
+            background: #eef3ff;
+            border-top: 1px solid #bcd0ff;
+        }
+
+        #message_input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #aac8ff;
+            border-radius: 25px;
+            background: #ffffff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #send_btn {
+            margin-left: 10px;
+            background: #1a73e8;
+            border: none;
+            padding: 0 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #send_btn:hover {
+            background: #1666c2;
         }
     </style>
 </head>
 
-<body class="p-4">
-    <h2 class="fw-bold">Ticket Conversation</h2>
-    <div id="chatBox" class="d-flex flex-column"></div>
+<body data-ticket-id="{{ ticket_id }}" data-user-id="{{ admin_id }}">
 
-    <script type="module">
-        const ticketId = "{{ ticket_id }}";
-        const token = localStorage.getItem("admin_token");
+    <!-- Admin Top Bar -->
+    <div class="top-bar">
+        <a class="back-btn" href="/admin/tickets">← Back</a>
+        <span>Admin Chat – Ticket {{ ticket_id }}</span>
+        <span style="opacity: 0;">Back</span>
+    </div>
 
-        async function loadChat() {
-            const res = await fetch(`/api/admin/messages/${ticketId}`, {
-                headers: { "Authorization": "Bearer " + token }
-            });
+    <!-- Messages List -->
+    <div id="messages"></div>
 
-            const data = await res.json();
-            const chatBox = document.getElementById("chatBox");
+    <!-- Type & Send -->
+    <div class="input-area">
+        <input type="text" id="message_input" placeholder="Type a message...">
+        <button id="send_btn">Send</button>
+    </div>
 
-            data.messages.forEach(m => {
-                const div = document.createElement("div");
+    <!-- Chat JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/admin_ticket_chat.js') }}"></script>
 
-                div.classList.add("msg");
-                div.classList.add(m.sender_id == 0 ? "admin" : "user");
-
-                div.textContent = `${m.sender_id == 0 ? "Admin" : "User"}: ${m.message}`;
-
-                chatBox.appendChild(div);
-            });
-        }
-        loadChat();
-    </script>
 </body>
 </html>
