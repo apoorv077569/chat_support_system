@@ -34,13 +34,16 @@ async function loadMessages() {
 // ADD MESSAGE TO UI
 // ----------------------------
 function addMessage(sender, message) {
+  sender = String(sender);
+  const currentUser = String(user_id);
+
   const div = document.createElement("div");
   div.classList.add("msg");
 
-  if (sender == user_id) {
+  if(sender === currentUser){
     div.classList.add("me");
     div.textContent = message;
-  } else {
+  }else{
     div.classList.add("other");
     div.textContent = message;
   }
