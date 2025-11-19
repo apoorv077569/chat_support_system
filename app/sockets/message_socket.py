@@ -21,15 +21,9 @@ def handle_send_message(data):
     sender_id = data["sender_id"]
     message_text = data["message"]
 
-    msg = Message(ticket_id=ticket_id, sender_id=sender_id,
-                  message=message_text, timestamp=datetime.utcnow())
-    db.session.add(msg)
-    db.session.commit()
-
     emit("receive_message", {
-        "message_id": msg.message_id,
-        "ticket_id": ticket_id,
         "sender_id": sender_id,
-        "message": message_text,
-        "timestamp": str(msg.timestamp)
+        "ticket_id": ticket_id,
+        "message": message_text
     }, room=str(ticket_id))
+
